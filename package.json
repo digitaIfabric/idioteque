@@ -1,0 +1,26 @@
+{
+  "name": "idioteque",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "elementary .",
+    "nodemon": "nodemon --exec elementary .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaIfabric/idioteque.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/digitaIfabric/idioteque/issues"
+  },
+  "homepage": "https://github.com/digitaIfabric/idioteque#readme",
+  "dependencies": {
+    "@nick-thompson/drumsynth": "^0.2.0",
+    "@nick-thompson/elementary": "^0.2.2",
+    "nodemon": "^2.0.12"
+  }
+}
