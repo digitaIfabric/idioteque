@@ -33,6 +33,9 @@ const ds = require('@nick-thompson/drumsynth');
 // @returns {core.Node}
 
 const chords = 'idioteque.wav';
+const MyIR = 'DrumRoom.aif';
+const drumRoom = 'NiceDrumRoom.wav';
+const largeRoom = 'BigDenseStudio.aif';
 
 const modulate = (x, rate, amount) => {
   return el.add(x, el.mul(amount, el.cycle(rate)));
@@ -53,14 +56,19 @@ core.on('load', () => {
   // DRUM SOUNDS
   let shaker = ds.hat(164.8138, 5274.041, 0.005, modulate(0.5, 4, 0.47), shakerSeq);
   let hat = ds.hat(329.6276, 5274.041, 0.005, modulate(0.5, 4, 0.47), hClosedSeq);
-  let snare = ds.clap(1318.510, 0.005, 0.204, snareSeq);
-  let kick = ds.kick(38.89087, 0.075, modulate(0.255, 1, 0.200), 0.7, 5, kickSeq);
+  let snare = ds.clap(2489.016, 0.015, 0.65, snareSeq);
+  let delayedSnare = el.delay({size: 44100}, el.ms2samps(50), 0.5, snare);
+  let reverbSnare = el.convolve({path: MyIR}, delayedSnare);
+  let reverbSnare2 = el.convolve({path: drumRoom}, reverbSnare);
+  let reverbSnare3 = el.convolve({path: largeRoom}, reverbSnare2);
+  let snareWD = el.add(snare, reverbSnare3);
+  let kick = ds.kick(38.89087, 0.25, modulate(0.255, 1, 0.200), 0.5, 5, kickSeq);
 
   // OUTPUT GAIN
   let outDrums = el.add(
-    el.mul(0.5, shaker),
+    el.mul(0.3, shaker),
     el.mul(0.1, hat),
-    el.mul(0.8, snare),
+    el.mul(0.8, snareWD),
     el.mul(0.5, kick),
   )
   let outChords = el.mul(0.5, el.sample({path: chords}, gateChords));
