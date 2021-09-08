@@ -3,7 +3,6 @@
 //                                           |__ \| |__` |/ _` | '_ \ _| | | '_ \__ | | |_) | | | | |
 //                                            __) | |  | | (_| | |_) |_  | | |_) || | | .__/| | |_| |
 // Idioteque                                 |___/|_|  |_|\__,_|_.__/  |_|_|_.__/__/|_|\___||_|\____|
-const core = require('elementary-core');
 const el = require('@nick-thompson/elementary');
 const ds = require('@nick-thompson/drumsynth');
 
@@ -35,6 +34,7 @@ const ds = require('@nick-thompson/drumsynth');
 const chords = 'idioteque.wav';
 const introFX = 'introFX.aif';
 const drumRoom = 'DrumRoom.aif';
+const vocals = 'chorus-vocals.wav';
 const niceDrumRoom = 'NiceDrumRoom.wav';
 const largeRoom = 'BigDenseStudio.aif';
 
@@ -43,15 +43,15 @@ const modulate = (x, rate, amount) => {
   return el.add(x, el.mul(amount, el.cycle(rate)));
 }
 
-core.on('load', () => {
-  // TEMPO
+elementary.core.on('load', () => {
+  // TEMPO & KEY
+  // 138 Eb
+  let gateLoop = el.train(0);
   let gate = el.train(276/60);
-  let gateChords = el.train(0.11475);
-  let gateIntro = el.train(0.0500);
   let gateKick = el.train(552/60);
 
   // DRUM SEQUENCE
-  let shakerSeq =    el.seq({seq: [0, 1, 0, 1, 0, 1, 0, 1]}, gate);
+  let shakerSeq =    el.seq({seq: [0, 1, 0, 1, 0, 1, 0, 1], loop: true}, gate);
   let hClosedSeq =   el.seq({seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
   let snareSeq =     el.seq({seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
   let kickSeq =      el.seq({seq: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0 ,0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0], hold: true}, gateKick);
@@ -82,20 +82,24 @@ core.on('load', () => {
     el.mul(0.3, snareA7WD),
     el.mul(0.4, highPassKick),
   )
-  let outChordsL = el.mul(0.5, el.sample({path: chords, channel: 0}, gateChords));
-  let outChordsR = el.mul(0.5, el.sample({path: chords, channel: 1}, gateChords));
-  let introL = el.mul(0.9, el.sample({path: introFX, channel: 0}, gateIntro));
-  let introR = el.mul(0.9, el.sample({path: introFX, channel: 1}, gateIntro));
+  let outChordsL = el.mul(0.3, el.sample({path: chords, mode: 'loop', channel: 0}, gateLoop));
+  let outChordsR = el.mul(0.3, el.sample({path: chords, mode: 'loop', channel: 1}, gateLoop));
+  let vocalsL = el.mul(0.3, el.sample({path: vocals, mode: 'loop', channel: 0}, gateLoop));
+  let vocalsR = el.mul(0.3, el.sample({path: vocals, mode: 'loop', channel: 1}, gateLoop));
+  let introL = el.mul(0.9, el.sample({path: introFX, mode: 'loop', channel: 0}, gateLoop));
+  let introR = el.mul(0.9, el.sample({path: introFX, mode: 'loop', channel: 1}, gateLoop));
   let output = el.add(
     outChordsL, 
     outChordsR, 
+    el.mul(1.5, vocalsL),
+    el.mul(1.5, vocalsR),
     // introL,
     // introR,  
-    el.mul(0.9, outDrums)
+    el.mul(0.5, outDrums)
   );
 
   // RENDER
-  core.render(
+  elementary.core.render(
     output,
     output
   );

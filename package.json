@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/digitaIfabric/idioteque#readme",
   "dependencies": {
-    "@nick-thompson/drumsynth": "^0.2.0",
-    "@nick-thompson/elementary": "^0.2.2",
+    "@nick-thompson/drumsynth": "^0.2.1",
+    "@nick-thompson/elementary": "^0.9.6",
     "nodemon": "^2.0.12"
   }
 }
