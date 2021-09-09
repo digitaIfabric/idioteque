@@ -17,11 +17,7 @@ const modulate = (x, rate, amount) => {
   return el.add(x, el.mul(amount, el.cycle(rate)));
 }
 
-// let coreLoaded = false;
-
 function render(){
-  // if (coreLoaded) return;
-
   // KEY Eb
   // SET TEMPO
   let gateLoop = el.train(0);
@@ -29,10 +25,10 @@ function render(){
   let gateKick = el.train(552/60);
 
   // DRUM SEQUENCE
-  let shakerSeq =    el.seq({seq: [0, 1, 0, 1, 0, 1, 0, 1]}, gate);
-  let hClosedSeq =   el.seq({seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
-  let snareSeq =     el.seq({seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
-  let kickSeq =      el.seq({seq: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0 ,0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0], hold: true}, gateKick);
+  let shakerSeq =    el.seq({key: 's1', seq: [0, 1, 0, 1, 0, 1, 0, 1]}, gate);
+  let hClosedSeq =   el.seq({key: 's2', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
+  let snareSeq =     el.seq({key: 's3', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
+  let kickSeq =      el.seq({key: 's4', seq: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0 ,0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0], hold: true}, gateKick);
 
   // DRUM SOUNDS
   let shaker = ds.hat(195.9977, 6271.927, 0.005, modulate(0.5, 4, 0.47), shakerSeq);
@@ -67,25 +63,16 @@ function render(){
   let introL = el.mul(0.9, el.sample({path: introFX, mode: 'loop', channel: 0}, gateLoop));
   let introR = el.mul(0.9, el.sample({path: introFX, mode: 'loop', channel: 1}, gateLoop));
   let output = el.add(
-    outChordsL, 
-    outChordsR, 
-    // el.mul(1.5, vocalsL),
-    // el.mul(1.5, vocalsR),
-    // introL,
-    // introR,  
+    // outChordsL, outChordsR,
+    // el.mul(1.5, vocalsL), el.mul(1.5, vocalsR),
+    introL, introR,
     el.mul(0.5, outDrums)
   );
 
   elementary.core.render(
-    output,
-    output
+    output, output
   );
 
 }
-
-elementary.core.on('load',() => { 
-  // coreLoaded = true; 
-  render(); 
-});
 
 module.exports.render = render;
