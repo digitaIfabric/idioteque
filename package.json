@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "elementary ./index.js",
-    "concurrently": "concurrently 'elementary ./dsp/index.js' 'node ./index.js'",
-    "nodemon": "nodemon --exec elementary ./dsp/index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "elementary ./index.js"
   },
   "repository": {
     "type": "git",
@@ -21,9 +19,12 @@
   "homepage": "https://github.com/digitaIfabric/idioteque#readme",
   "dependencies": {
     "@nick-thompson/drumsynth": "^0.2.1",
-    "@nick-thompson/elementary": "^0.9.6",
+    "@nick-thompson/elementary": "^0.10.6",
     "chokidar": "^3.5.2",
     "concurrently": "^6.2.1",
     "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "@types/nick-thompson__elementary": "^0.9.0"
   }
 }

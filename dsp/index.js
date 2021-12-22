@@ -3,8 +3,9 @@
 //                                           |__ \| |__` |/ _` | '_ \ _| | | '_ \__ | | |_) | | | | |
 //                                            __) | |  | | (_| | |_) |_  | | |_) || | | .__/| | |_| |
 // Idioteque                                 |___/|_|  |_|\__,_|_.__/  |_|_|_.__/__/|_|\___||_|\____|
-const el = require('@nick-thompson/elementary');
-const ds = require('@nick-thompson/drumsynth');
+import { ElementaryNodeRenderer as core, el } from '@nick-thompson/elementary';
+import ds from '@nick-thompson/drumsynth';
+
 
 const chords = './samples/idioteque.wav';
 const introFX = './samples/introFX.aif';
@@ -69,7 +70,7 @@ function render(){
     el.mul(0.5, outDrums)
   );
 
-  elementary.core.render(
+  core.render(
     output, output
   );
 
