@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "elementary ./index.js"
   },
@@ -18,13 +17,16 @@
   },
   "homepage": "https://github.com/digitaIfabric/idioteque#readme",
   "dependencies": {
-    "@nick-thompson/drumsynth": "^0.2.1",
-    "@nick-thompson/elementary": "^0.10.6",
+    "@hediet/node-reload": "^0.7.3",
+    "@nick-thompson/drumsynth": "^0.3.0",
+    "@nick-thompson/elementary": "^0.9.6",
     "chokidar": "^3.5.2",
     "concurrently": "^6.2.1",
+    "hot-import": "^0.2.14",
     "nodemon": "^2.0.12"
   },
   "devDependencies": {
-    "@types/nick-thompson__elementary": "^0.9.0"
+    "@types/nick-thompson__elementary": "^0.9.0",
+    "ts-node-dev": "^1.1.8"
   }
 }

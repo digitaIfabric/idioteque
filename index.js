@@ -1,11 +1,9 @@
-import { ElementaryNodeRenderer as core } from '@nick-thompson/elementary';
-
-import chokidar from 'chokidar';
+const chokidar = require('chokidar');
 
 const watcher = chokidar.watch("./dsp/");
 let didLoad = false;
 
-core.on('load',() => { 
+elementary.core.on('load',() => { 
   // Here, we install a listener for the load event immediately. It will likely
   // come before any file changes and kick off the initial render. If a file change
   // does happen before the load event, we should block the watcher from rendering
