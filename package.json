@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "elementary ./index.js"
+    "start": "elementary ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,7 @@
   "dependencies": {
     "@hediet/node-reload": "^0.7.3",
     "@nick-thompson/drumsynth": "^0.3.0",
-    "@nick-thompson/elementary": "^0.9.6",
+    "@nick-thompson/elementary": "^0.10.8",
     "chokidar": "^3.5.2",
     "concurrently": "^6.2.1",
     "hot-import": "^0.2.14",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/nick-thompson__elementary": "^0.9.0",
-    "ts-node-dev": "^1.1.8"
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.4"
   }
 }
