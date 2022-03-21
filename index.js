@@ -1,8 +1,10 @@
 import { ElementaryNodeRenderer as core } from '@nick-thompson/elementary';
-
 import chokidar from 'chokidar';
+import render from './dsp/index.js';
 
 const watcher = chokidar.watch("./dsp/");
+const modulePath = './dsp/index.js';
+
 let didLoad = false;
 
 core.on('load',() => { 
@@ -10,25 +12,25 @@ core.on('load',() => {
   // come before any file changes and kick off the initial render. If a file change
   // does happen before the load event, we should block the watcher from rendering
   didLoad = true;
-  require("./dsp/index.js").render();
+  render();
 });
 
-watcher.on("ready", function() {
-  watcher.on("all", function() {
-    Object.keys(require.cache).forEach(function(id) {
-      //Get the local path to the module
-      const localId = id.substr(process.cwd().length);
+core.initialize();
 
-      //Ignore anything not in dsp/
-      if(!localId.match(/^\/dsp\//)) return;
 
-      //Remove the module from the cache
-      delete require.cache[id];
-    });
-
-    // If we've already loaded, safe to render again
-    if (didLoad) {
-      require("./dsp/index.js").render();
-    }
-  });
+watcher.on("ready", function(path) {
+    watcher.on("change", async function(path) {
+      console.log(`Change file ${path}`);
+        async function importFresh(modulePath) {
+            const cacheBustingModulePath = `${modulePath}?update=${Date.now()}`
+            return (await import(cacheBustingModulePath)).default
+        }
+        if (didLoad) {
+            // Here, we install a listener for the load event immediately. It will likely
+            // come before any file changes and kick off the initial render. If a file change
+            // does happen before the load event, we should block the watcher from rendering
+            const render = await importFresh(modulePath);
+            render();
+        }
+    })
 });
