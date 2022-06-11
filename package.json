@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/digitaIfabric/idioteque#readme",
   "dependencies": {
-    "@nick-thompson/drumsynth": "^0.2.1",
     "@nick-thompson/elementary": "^0.10.6",
+    "@tonaljs/tonal": "^4.6.5",
     "chokidar": "^3.5.2",
     "concurrently": "^6.2.1",
     "nodemon": "^2.0.12"
