@@ -1,3 +1,5 @@
+let timeSwitch = 0
+let muteSwitch = 0
 //                                                 _          _       __  _        _ _ _ __  _  ____
 //                                            ___ (_)__ _  __| |_ __ |_ \| |_ __ _| (_) '_ \(_)/ _  |
 //                                           |__ \| |__` |/ _` | '_ \ _| | | '_ \__ | | |_) | | | | |
@@ -6,11 +8,13 @@
 import { ElementaryNodeRenderer as core, el } from '@nick-thompson/elementary';
 import { Note, Scale } from '@tonaljs/tonal';
 
+const modulate = (x, rate, amount) => {
+  return el.add(x, el.mul(amount, el.cycle(rate)));
+}
+
 let TEMPO = 138;
 let KEY = 'Eb';
 let SCALE = KEY + ' major';
-let muteSwitch = 0;
-let timeSwitch = 1;
 
 // SAMPLES
 const chords = './samples/idioteque.wav';
@@ -129,10 +133,6 @@ function kick(pitch, click, attack, decay, drive, gate) {
       ),
     )
   );
-}
-
-const modulate = (x, rate, amount) => {
-  return el.add(x, el.mul(amount, el.cycle(rate)));
 }
 
 const CHORD_FREQS = [
@@ -262,7 +262,7 @@ function render(){
   let note16 = el.mul(env, voice(el.seq({key: 'arp16', seq: [0, 0, 0, CHORD_FREQS[3][3], CHORD_FREQS[3][3]], hold: true}, gateChords)));
 
   // CHORD SEQUENCE
-  let chordI   = (chI, el.seq({key: 's5', seq:  [1, 0, 0, 0]}, gateChords));
+  let chordI   = (chI, el.seq({key: 's5', seq:  [1, 1, 1, 1, 0, 0, 0, 0]}, gate));
   let chordII  = (chII, el.seq({key: 's6', seq: [0, 1, 0, 0]}, gateChords));
   let chordIII = (chIII, el.seq({key: 's7', seq:[0, 0, 1, 0]}, gateChords));
   let chordIV  = (chIV, el.seq({key: 's7', seq: [0, 0, 0, 1]}, gateChords));
@@ -332,15 +332,16 @@ function render(){
   let outChordsR = el.mul(0.8, el.sample({path: chords, mode: 'loop', channel: 1}, gateLoop));
   let vocalsL = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 0}, gateLoop));
   let vocalsR = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 1}, gateLoop));
-  let introL = el.mul(2.5, el.sample({path: intro, mode: 'gate', channel: 0}, gateLoop));
-  let introR = el.mul(2.5, el.sample({path: intro, mode: 'gate', channel: 1}, gateLoop));
+  let introL = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 0}, gateLoop));
+  let introR = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 1}, gateLoop));
   let arpeggio = muteSwitch ? el.mul(0, arp) : timeSwitch ? el.add(arp) : el.add(arp);
 
   let output = el.add(
-    introL, introR,
-    wetdryChords, wetdryChords2,
+    // introL, introR,
+    // wetdryChords, wetdryChords2,
     // outChordsL, outChordsR,
     // vocalsL, vocalsR,
+    // chordI,
     // el.mul(0.15, arpeggio),
     el.mul(0.8, outDrums)
   );
