@@ -18,6 +18,11 @@
   },
   "homepage": "https://github.com/digitaIfabric/idioteque#readme",
   "dependencies": {
+    "@elemaudio/compressor": "^1.0.2",
+    "@elemaudio/core": "^1.0.5",
+    "@elemaudio/node-renderer": "^1.0.2",
+    "@elemaudio/plugin-renderer": "^1.0.5",
+    "@elemaudio/srvb": "^1.1.3",
     "@nick-thompson/elementary": "^0.10.6",
     "@tonaljs/tonal": "^4.6.5",
     "chokidar": "^3.5.2",

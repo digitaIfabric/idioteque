@@ -5,7 +5,8 @@ let muteSwitch = 0
 //                                           |__ \| |__` |/ _` | '_ \ _| | | '_ \__ | | |_) | | | | |
 //                                            __) | |  | | (_| | |_) |_  | | |_) || | | .__/| | |_| |
 // Idioteque                                 |___/|_|  |_|\__,_|_.__/  |_|_|_.__/__/|_|\___||_|\____|
-import { ElementaryNodeRenderer as core, el } from '@nick-thompson/elementary';
+import { el } from '@elemaudio/core';
+import {default as core} from '@elemaudio/node-renderer';
 import { Note, Scale } from '@tonaljs/tonal';
 
 const modulate = (x, rate, amount) => {
@@ -23,7 +24,7 @@ const intro = './samples/intro.wav';
 
 /** A quick helper for a sine wave oscillator with a phase offset. */
 function cycle(freq, phaseOffset) {
-  let t = el.add(el.phasor(freq), phaseOffset);
+  let t = el.add(el.phasor(freq, 0), phaseOffset);
   let p = el.sub(t, el.floor(t));
 
   return el.sin(el.mul(2 * Math.PI, p));
@@ -237,40 +238,40 @@ function render(){
   
   // ARPEGGIO  
   let envArp = el.adsr(0.002, 0.005, 0.5, 1.5, gateArp);
-  let left = el.mul(envArp, voice(el.seq({key: 'arp', seq: FREQ_SHUFFLE, hold: true}, gateArp)));
+  let left = el.mul(envArp, voice(el.seq({key: 'arp', seq: FREQ_SHUFFLE, hold: true}, gateArp, 0)));
   let T2 = timeSwitch ? 9/10 : 8/10;
   let T3 = timeSwitch ? 3/4 : 3/4;
   let delayedLeft = el.delay({size: 44100}, el.ms2samps((60000/TEMPO) * T3), T2, left);
   let arp = el.mul(0.5, delayedLeft);
 
   let env = el.adsr(0.002, 0.005, 0.9, 1, gateLoop);
-  let note1 = el.mul(env, voice(el.seq({key: 'arp1', seq: [CHORD_FREQS[0][0], 0, 0, 0, 0], hold: true}, gateChords)));
-  let note2 = el.mul(env, voice(el.seq({key: 'arp2', seq: [CHORD_FREQS[0][1], 0, 0, 0, 0], hold: true}, gateChords)));
-  let note3 = el.mul(env, voice(el.seq({key: 'arp3', seq: [CHORD_FREQS[0][2], 0, 0, 0, 0], hold: true}, gateChords)));
-  let note4 = el.mul(env, voice(el.seq({key: 'arp4', seq: [CHORD_FREQS[0][3], 0, 0, 0, 0], hold: true}, gateChords)));
-  let note5 = el.mul(env, voice(el.seq({key: 'arp5', seq: [0, CHORD_FREQS[1][0], 0, 0, 0], hold: true}, gateChords)));
-  let note6 = el.mul(env, voice(el.seq({key: 'arp6', seq: [0, CHORD_FREQS[1][1], 0, 0, 0], hold: true}, gateChords)));
-  let note7 = el.mul(env, voice(el.seq({key: 'arp7', seq: [0, CHORD_FREQS[1][2], 0, 0, 0], hold: true}, gateChords)));
-  let note8 = el.mul(env, voice(el.seq({key: 'arp8', seq: [0, CHORD_FREQS[1][3], 0, 0, 0], hold: true}, gateChords)));
-  let note9 = el.mul(env, voice(el.seq({key: 'arp9', seq: [0, 0, CHORD_FREQS[2][0], 0, 0], hold: true}, gateChords)));
-  let note10 = el.mul(env, voice(el.seq({key: 'arp10', seq: [0, 0, CHORD_FREQS[2][1], 0, 0], hold: true}, gateChords)));
-  let note11 = el.mul(env, voice(el.seq({key: 'arp11', seq: [0, 0, CHORD_FREQS[2][2], 0, 0], hold: true}, gateChords)));
-  let note12 = el.mul(env, voice(el.seq({key: 'arp12', seq: [0, 0, CHORD_FREQS[2][3], 0, 0], hold: true}, gateChords)));
-  let note13 = el.mul(env, voice(el.seq({key: 'arp13', seq: [0, 0, 0, CHORD_FREQS[3][0], CHORD_FREQS[3][0]], hold: true}, gateChords)));
-  let note14 = el.mul(env, voice(el.seq({key: 'arp14', seq: [0, 0, 0, CHORD_FREQS[3][1], CHORD_FREQS[3][1]], hold: true}, gateChords)));
-  let note15 = el.mul(env, voice(el.seq({key: 'arp15', seq: [0, 0, 0, CHORD_FREQS[3][2], CHORD_FREQS[3][2]], hold: true}, gateChords)));
-  let note16 = el.mul(env, voice(el.seq({key: 'arp16', seq: [0, 0, 0, CHORD_FREQS[3][3], CHORD_FREQS[3][3]], hold: true}, gateChords)));
+  let note1 = el.mul(env, voice(el.seq({key: 'arp1', seq: [CHORD_FREQS[0][0], 0, 0, 0, 0], hold: true}, gateChords, 0)));
+  let note2 = el.mul(env, voice(el.seq({key: 'arp2', seq: [CHORD_FREQS[0][1], 0, 0, 0, 0], hold: true}, gateChords, 0)));
+  let note3 = el.mul(env, voice(el.seq({key: 'arp3', seq: [CHORD_FREQS[0][2], 0, 0, 0, 0], hold: true}, gateChords, 0)));
+  let note4 = el.mul(env, voice(el.seq({key: 'arp4', seq: [CHORD_FREQS[0][3], 0, 0, 0, 0], hold: true}, gateChords, 0)));
+  let note5 = el.mul(env, voice(el.seq({key: 'arp5', seq: [0, CHORD_FREQS[1][0], 0, 0, 0], hold: true}, gateChords, 0)));
+  let note6 = el.mul(env, voice(el.seq({key: 'arp6', seq: [0, CHORD_FREQS[1][1], 0, 0, 0], hold: true}, gateChords, 0)));
+  let note7 = el.mul(env, voice(el.seq({key: 'arp7', seq: [0, CHORD_FREQS[1][2], 0, 0, 0], hold: true}, gateChords, 0)));
+  let note8 = el.mul(env, voice(el.seq({key: 'arp8', seq: [0, CHORD_FREQS[1][3], 0, 0, 0], hold: true}, gateChords, 0)));
+  let note9 = el.mul(env, voice(el.seq({key: 'arp9', seq: [0, 0, CHORD_FREQS[2][0], 0, 0], hold: true}, gateChords, 0)));
+  let note10 = el.mul(env, voice(el.seq({key: 'arp10', seq: [0, 0, CHORD_FREQS[2][1], 0, 0], hold: true}, gateChords, 0)));
+  let note11 = el.mul(env, voice(el.seq({key: 'arp11', seq: [0, 0, CHORD_FREQS[2][2], 0, 0], hold: true}, gateChords, 0)));
+  let note12 = el.mul(env, voice(el.seq({key: 'arp12', seq: [0, 0, CHORD_FREQS[2][3], 0, 0], hold: true}, gateChords, 0)));
+  let note13 = el.mul(env, voice(el.seq({key: 'arp13', seq: [0, 0, 0, CHORD_FREQS[3][0], CHORD_FREQS[3][0]], hold: true}, gateChords, 0)));
+  let note14 = el.mul(env, voice(el.seq({key: 'arp14', seq: [0, 0, 0, CHORD_FREQS[3][1], CHORD_FREQS[3][1]], hold: true}, gateChords, 0)));
+  let note15 = el.mul(env, voice(el.seq({key: 'arp15', seq: [0, 0, 0, CHORD_FREQS[3][2], CHORD_FREQS[3][2]], hold: true}, gateChords, 0)));
+  let note16 = el.mul(env, voice(el.seq({key: 'arp16', seq: [0, 0, 0, CHORD_FREQS[3][3], CHORD_FREQS[3][3]], hold: true}, gateChords, 0)));
 
   // CHORD SEQUENCE
-  let chordI   = (chI, el.seq({key: 's5', seq:  [1, 1, 1, 1, 0, 0, 0, 0]}, gate));
-  let chordII  = (chII, el.seq({key: 's6', seq: [0, 1, 0, 0]}, gateChords));
-  let chordIII = (chIII, el.seq({key: 's7', seq:[0, 0, 1, 0]}, gateChords));
-  let chordIV  = (chIV, el.seq({key: 's7', seq: [0, 0, 0, 1]}, gateChords));
+  let chordI   = (chI, el.seq({key: 's5', seq:  [1, 1, 1, 1, 0, 0, 0, 0]}, gate, 0));
+  let chordII  = (chII, el.seq({key: 's6', seq: [0, 1, 0, 0]}, gateChords, 0));
+  let chordIII = (chIII, el.seq({key: 's7', seq:[0, 0, 1, 0]}, gateChords, 0));
+  let chordIV  = (chIV, el.seq({key: 's7', seq: [0, 0, 0, 1]}, gateChords, 0));
 
   // DRUM SEQUENCE
-  let shakerSeq =    el.seq({key: 's1', seq: [0, 1, 0, 1, 0, 1, 0, 1]}, gate);
-  let hClosedSeq =   el.seq({key: 's2', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
-  let snareSeq =     el.seq({key: 's3', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate);
+  let shakerSeq =    el.seq({key: 's1', seq: [0, 1, 0, 1, 0, 1, 0, 1]}, gate, 0);
+  let hClosedSeq =   el.seq({key: 's2', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate, 0);
+  let snareSeq =     el.seq({key: 's3', seq: [0, 0, 1, 0, 0, 0, 1, 0]}, gate, 0);
   let kickSeq =      el.seq({key: 's4', seq: [1, 1, 0, 0, 0, 0, 0, 0, 
                                               0, 0, 1, 1, 0, 0, 1, 0, 
                                               1, 1, 0, 0, 0, 1, 1, 0, 
@@ -280,7 +281,7 @@ function render(){
                                               1, 1, 0, 0 ,0, 0, 0, 0, 
                                               0, 0, 1, 1, 0, 0, 1, 0, 
                                               1, 1, 0, 0, 0, 1, 1, 0, 
-                                              1, 1, 0, 0, 0, 0, 0, 0], hold: true}, gateKick);
+                                              1, 1, 0, 0, 0, 0, 0, 0], hold: true}, gateKick, 0);
 
   // DRUM SOUNDS
   let shaker = hat(195.9977, 6271.927, 0.005, modulate(0.5, 4, 0.47), shakerSeq);
@@ -328,12 +329,12 @@ function render(){
     el.mul(0.3, snareWD),
     el.mul(0.4, highPassKick),
   );
-  let outChordsL = el.mul(0.8, el.sample({path: chords, mode: 'loop', channel: 0}, gateLoop));
-  let outChordsR = el.mul(0.8, el.sample({path: chords, mode: 'loop', channel: 1}, gateLoop));
-  let vocalsL = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 0}, gateLoop));
-  let vocalsR = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 1}, gateLoop));
-  let introL = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 0}, gateLoop));
-  let introR = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 1}, gateLoop));
+  let outChordsL = el.mul(0.8, el.sample({path: chords, mode: 'loop', channel: 0}, gateLoop, 0));
+  let outChordsR = el.mul(0.8, el.sample({path: chords, mode: 'loop', channel: 1}, gateLoop, 0));
+  let vocalsL = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 0}, gateLoop, 0));
+  let vocalsR = el.mul(1.5, el.sample({path: vocals, mode: 'loop', channel: 1}, gateLoop, 0));
+  let introL = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 0}, gateLoop, 0));
+  let introR = el.mul(3, el.sample({path: intro, mode: 'gate', channel: 1}, gateLoop, 0));
   let arpeggio = muteSwitch ? el.mul(0, arp) : timeSwitch ? el.add(arp) : el.add(arp);
 
   let output = el.add(

@@ -1,4 +1,4 @@
-import { ElementaryNodeRenderer as core } from '@nick-thompson/elementary';
+import {default as core} from '@elemaudio/node-renderer';
 import chokidar from 'chokidar';
 import render from './dsp/index.js';
 
